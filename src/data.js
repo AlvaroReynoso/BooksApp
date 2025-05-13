@@ -1,0 +1,38 @@
+export const books = [
+  {
+    bookId: 1,
+    bookTitle: "100 años de soledad",
+    bookAuthor: "Gabriel Garcia Márquez",
+    bookRating: 5,
+    bookLength: 410,
+    imageUrl: "./3432971.jpg",
+    available: "",
+  },
+  {
+    bookId: 2,
+    bookTitle: "100 años ",
+    bookAuthor: "Gabriel Garcia ",
+    bookRating: 4,
+    bookLength: 510,
+    imageUrl: "./o77jz6fow8r61.webp",
+    available: "s",
+  },
+  {
+    bookId: 3,
+    bookTitle: "Juan ",
+    bookAuthor: "Gabriel Peqs ",
+    bookRating: 2,
+    bookLength: 123,
+    imageUrl: "./3432971.jpg",
+    available: "",
+  },
+  {
+    bookId: 4,
+    bookTitle: "Topoi",
+    bookAuthor: "XX1 b ",
+    bookRating: 6,
+    bookLength: 5,
+    imageUrl: "./6232318.jpg",
+    available: "s",
+  },
+];

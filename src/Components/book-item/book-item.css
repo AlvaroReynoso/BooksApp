@@ -1,0 +1,22 @@
+h1 {
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+}
+
+.card-container {
+  display: flex;
+  grid-template-columns: repeat(4, 2fr);
+  margin-bottom: 20px;
+}
+
+li {
+  list-style: none;
+}
+
+button {
+  margin-bottom: 10px;
+}
+
+.button-container {
+  padding: 8px;
+}

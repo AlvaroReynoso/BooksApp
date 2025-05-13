@@ -1,0 +1,4 @@
+.new-book-container {
+  width: 100%;
+  display: block; /* Asegura que ocupe todo el ancho */
+}
