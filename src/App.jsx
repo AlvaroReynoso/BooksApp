@@ -21,14 +21,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="login" element={<Login onLogin={handleLogin} />} />
+          <Route element={<Protected isSignedIn={loggedIn} />}>
           <Route
-            path="library"
-            element={
-              <Protected isSignedIn={loggedIn}>
-                <Dashboard oncloseSession={handleCloseLogin} />
-              </Protected>
-            }
+            path="/library/*"
+            element={<Dashboard oncloseSession={handleCloseLogin} />}
           />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -5,6 +5,7 @@ import "./book-item.css";
 import { useState } from "react";
 import { Star, StarFill } from "react-bootstrap-icons";
 import DeleteBookModal from "../ui/modal/modal";
+import { useNavigate } from "react-router";
 
 function BookItem({
   bookId,
@@ -14,16 +15,25 @@ function BookItem({
   bookLength,
   imageUrl,
   available,
-  onBookSelected,
   handleDelete,
 }) {
-  const [showUpdate, setShowUpdate] = useState(bookTitle);
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
 
   const handleUpdate = () => {
-    setShowUpdate("Libro Seleccionado");
-
-    onBookSelected(bookTitle);
+    navigate(`${bookId}`, {
+      state: {
+        book: {
+          bookId,
+          bookTitle,
+          bookAuthor,
+          bookRating,
+          bookLength,
+          imageUrl,
+          available,
+        },
+      },
+    });
   };
 
   const handleDeleteClick = () => {
@@ -55,7 +65,6 @@ function BookItem({
               <Badge bg="danger">Reservado</Badge>
             )}
           </div>
-          <p>{showUpdate === "Libro Seleccionado" && `${showUpdate}`}</p>
           <Card.Title>{bookTitle}</Card.Title>
           <Card.Subtitle>{bookAuthor}</Card.Subtitle>
           <div>
