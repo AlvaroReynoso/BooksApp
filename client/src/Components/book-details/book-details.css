@@ -1,0 +1,28 @@
+.container-card {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  width: 75%;
+}
+
+.card-img {
+  width: 50%;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.button-card-container {
+  flex-direction: column;
+}
+
+.button-card-container > .edit-button {
+  justify-self: center;
+  align-self: center;
+  background-color: #4caf50; /* Verde */
+  color: white;
+  border-radius: 5px;
+  border: 1px solid #4caf50;
+  padding: 5px;
+  width: 50%;
+}

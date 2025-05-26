@@ -1,0 +1,27 @@
+.buttons-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.login-button {
+  width: 8em;
+}
+
+.link-register-button {
+  color: white;
+  text-decoration: none;
+  border: 1px solid rgb(11, 94, 215);
+  border-radius: 5px;
+  height: 2.4em;
+  margin-bottom: 10px;
+  background-color: rgb(11, 94, 215);
+  padding: 6px;
+}
+
+.link-register-button:hover {
+  background-color: rgb(39, 113, 223);
+  color: white;
+  text-decoration: none;
+}
