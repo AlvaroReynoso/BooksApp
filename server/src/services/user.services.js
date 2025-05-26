@@ -1,8 +1,17 @@
 import { User } from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import {
+  validateLoginUser,
+  validateRegisterUser,
+} from "../helpers/validations.js";
 
 export const registerUser = async (req, res) => {
+  const result = validateRegisterUser(req.body);
+  if (result.error)
+    return res.status(400).json({
+      message: result.message,
+    });
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res.status(400).send({
@@ -36,6 +45,11 @@ export const registerUser = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
+  const result = validateLoginUser(req.body);
+  if (result.error)
+    return res.status(400).json({
+      message: result.message,
+    });
   const { email, password } = req.body;
 
   const user = await User.findOne({

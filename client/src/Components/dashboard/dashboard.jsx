@@ -13,10 +13,24 @@ const Dashboard = ({ onLogout }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (location.pathname === "/library") {
+      fetch("http://localhost:3000/books", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setBooks([...data]);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [location]);
+
   const handleOnBookAdded = (enteredBook) => {
     fetch("http://localhost:3000/books", {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       body: JSON.stringify(enteredBook),
@@ -40,15 +54,6 @@ const Dashboard = ({ onLogout }) => {
   const handleAddBook = () => {
     navigate("/library/new-book", { replace: true });
   };
-
-  useEffect(() => {
-    fetch("http://localhost:3000/books")
-      .then((res) => res.json())
-      .then((data) => {
-        setBooks([...data]);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   return (
     <div>

@@ -42,7 +42,6 @@ const Login = ({ onLogin }) => {
       return;
     }
     setErrors({ email: false, password: false });
-    onLogin();
 
     fetch("http://localhost:3000/login", {
       method: "POST",
@@ -56,7 +55,7 @@ const Login = ({ onLogin }) => {
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error("Error en la autenticación");
+          throw new Error("El usuario no existe");
         }
         return res.json();
       })
@@ -64,11 +63,12 @@ const Login = ({ onLogin }) => {
         const token = data.token || data.accessToken || data;
         localStorage.setItem("token", token);
         console.log("token saved:", token);
+        onLogin();
+        navigate("/library");
       })
       .catch((error) => {
-        console.log("Login error: ", error);
+        alert(error);
       });
-    navigate("/library");
   };
 
   return (

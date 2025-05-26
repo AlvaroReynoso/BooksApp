@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
 
-const BookForm = ({ onBookAdded, editBook }) => {
+const BookForm = ({ onBookAdded, editBook, loading }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [rating, setRating] = useState("");
@@ -47,7 +47,7 @@ const BookForm = ({ onBookAdded, editBook }) => {
   };
 
   const handleChangeSummary = (e) => {
-    setSummary(e.target.value); // Actualizar el estado del resumen
+    setSummary(e.target.value);
   };
 
   const handleChangeAvailable = (e) => {
@@ -57,51 +57,40 @@ const BookForm = ({ onBookAdded, editBook }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title || !author) {
-      toast.error("El título y el autor son obligatorios."); // Notificación de error
+      toast.error("El título y el autor son obligatorios.");
       return;
     }
+
     const bookData = {
       bookTitle: title,
       bookAuthor: author,
       bookRating: rating,
       bookLength: pageCount,
       imageUrl,
-      summary, // Incluir el resumen en el objeto del libro
+      summary,
       available,
     };
 
+    // Si estamos editando, incluir el bookId
     if (editBook) {
       bookData.bookId = editBook.bookId;
-      fetch(`http://localhost:3000/books/${editBook.bookId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookData),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          onBookAdded(data); // Actualizar la lista de libros con el libro editado
-          toast.success("El libro se actualizó con éxito."); // Notificación de éxito
-          navigate("/library", { replace: true });
-        })
-        .catch((err) => {
-          toast.error("Error al actualizar el libro."); // Notificación de error
-          console.error(err);
-        });
-      return;
     }
 
+    // Llamar a la función proporcionada por el componente padre
     onBookAdded(bookData);
-    toast.success("El libro se creó con éxito."); // Notificación de éxito
-    navigate("/library", { replace: true });
-    setTitle("");
-    setAuthor("");
-    setRating("");
-    setPageCount("");
-    setImageUrl("");
-    setSummary(""); // Limpiar el campo del resumen
-    setAvailable(false);
+
+    // Solo limpiar el formulario si no estamos editando
+    if (!editBook) {
+      toast.success("El libro se creó con éxito.");
+      navigate("/library", { replace: true });
+      setTitle("");
+      setAuthor("");
+      setRating("");
+      setPageCount("");
+      setImageUrl("");
+      setSummary("");
+      setAvailable(false);
+    }
   };
 
   const handleBack = () => {
@@ -121,7 +110,8 @@ const BookForm = ({ onBookAdded, editBook }) => {
                     type="text"
                     placeholder="Ingresar título"
                     onChange={handleChangeTitle}
-                    value={title || ""} // Ensure value is always a string
+                    value={title || ""}
+                    disabled={loading}
                   />
                 </Form.Group>
               </Col>
@@ -132,7 +122,8 @@ const BookForm = ({ onBookAdded, editBook }) => {
                     type="text"
                     placeholder="Ingresar autor"
                     onChange={handleChangeAuthor}
-                    value={author || ""} // Ensure value is always a string
+                    value={author || ""}
+                    disabled={loading}
                   />
                 </Form.Group>
               </Col>
@@ -147,7 +138,8 @@ const BookForm = ({ onBookAdded, editBook }) => {
                     max={5}
                     min={0}
                     onChange={handleChangeRating}
-                    value={rating || ""} // Ensure value is always a string
+                    value={rating || ""}
+                    disabled={loading}
                   />
                 </Form.Group>
               </Col>
@@ -159,7 +151,8 @@ const BookForm = ({ onBookAdded, editBook }) => {
                     placeholder="Ingresar cantidad de páginas"
                     min={1}
                     onChange={handleChangePageCount}
-                    value={pageCount || ""} // Ensure value is always a string
+                    value={pageCount || ""}
+                    disabled={loading}
                   />
                 </Form.Group>
               </Col>
@@ -172,7 +165,8 @@ const BookForm = ({ onBookAdded, editBook }) => {
                   rows={3}
                   placeholder="Ingresar resumen del libro"
                   onChange={handleChangeSummary}
-                  value={summary || ""} // Ensure value is always a string
+                  value={summary || ""}
+                  disabled={loading}
                 />
               </Form.Group>
             </Row>
@@ -183,7 +177,8 @@ const BookForm = ({ onBookAdded, editBook }) => {
                   type="text"
                   placeholder="Ingresar url de imagen"
                   onChange={handleChangeImageUrl}
-                  value={imageUrl || ""} // Ensure value is always a string
+                  value={imageUrl || ""}
+                  disabled={loading}
                 />
               </Form.Group>
             </Row>
@@ -198,13 +193,24 @@ const BookForm = ({ onBookAdded, editBook }) => {
                   className="mb-3"
                   label="¿Disponible?"
                   onChange={handleChangeAvailable}
-                  checked={available || false} // Ensure value is always a boolean
+                  checked={available || false}
+                  disabled={loading}
                 />
                 <div className="button-card-container">
-                  <Button variant="primary" type="submit">
-                    {editBook ? "Actualizar libro" : "Agregar libro"}
+                  <Button variant="primary" type="submit" disabled={loading}>
+                    {loading
+                      ? editBook
+                        ? "Actualizando..."
+                        : "Agregando..."
+                      : editBook
+                      ? "Actualizar libro"
+                      : "Agregar libro"}
                   </Button>
-                  <Button variant="danger" onClick={handleBack}>
+                  <Button
+                    variant="danger"
+                    onClick={handleBack}
+                    disabled={loading}
+                  >
                     Volver
                   </Button>
                 </div>
